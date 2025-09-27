@@ -85,15 +85,21 @@ const patchUserContext: NavContextMenuPatchCallback = (children, { user }: UserC
     if (!user) return;
 
     const stalked = settings.store.targets.includes(user.id);
-    const group = findGroupChildrenByChildId("mark-channel-read", children) ?? children;
+    const group = findGroupChildrenByChildId("apps", children) ?? children;
+    let id = group.findLastIndex(child => child?.props.id && child.props.id !== "ignore"); // ignore button
+    if (id < 0) id = group.length - 1; // or at the end if not found
 
-    group.push(
+    group.forEach((child, i) => {
+        if (child?.props.id === "ignore")
+            id = i;
+    });
+
+    group.splice(id, 0,
         <Menu.MenuItem
-            id="vc-st-stalk-user"
-            label={stalked ? "Stop Stalking User" : "Stalk User"}
+            id="vc-st-stalk"
+            label={stalked ? "Unstalk" : "Stalk"}
             action={() => {
                 if (stalked) {
-                    const { targets } = settings.store;
                     settings.store.targets = settings.store.targets.replace(new RegExp(`(,?)(\\s*)(${user.id})`), "");
                 } else {
                     settings.store.targets += `,${user.id}`;
