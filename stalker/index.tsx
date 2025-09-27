@@ -86,13 +86,8 @@ const patchUserContext: NavContextMenuPatchCallback = (children, { user }: UserC
 
     const stalked = settings.store.targets.includes(user.id);
     const group = findGroupChildrenByChildId("apps", children) ?? children;
-    let id = group.findLastIndex(child => child?.props.id && child.props.id !== "ignore"); // ignore button
+    let id = group.findLastIndex(child => child?.props?.id && child.props.id === "ignore"); // ignore button
     if (id < 0) id = group.length - 1; // or at the end if not found
-
-    group.forEach((child, i) => {
-        if (child?.props.id === "ignore")
-            id = i;
-    });
 
     group.splice(id, 0,
         <Menu.MenuItem
