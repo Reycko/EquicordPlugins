@@ -5,10 +5,9 @@
  */
 
 import { showNotification } from "@api/Notifications";
-import { ChannelStore, NavigationRouter, PresenceStore, SelectedChannelStore, UserStore } from "@webpack/common";
+import { ChannelStore, NavigationRouter, PresenceStore, UserStore } from "@webpack/common";
 
-import { logger, settings, targets } from ".";
-import { findByPropsLazy } from "@webpack";
+import { settings, targets } from ".";
 
 let lastStatuses: Statuses | undefined;
 
